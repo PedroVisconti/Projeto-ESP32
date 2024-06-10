@@ -16,6 +16,8 @@ namespace ESP32.Controllers
 
             MQTT mqtt = new MQTT(dis, "Pedro", "test.mosquitto.org", 1883, "espdash/automacao/sensor");
             */
+            // int id, string nome, string sobrenome, string login, string senha, string cpf, DateTime data_nascimento
+            Usuario usuario = new Usuario("Pedro");
 
             return View();
         }

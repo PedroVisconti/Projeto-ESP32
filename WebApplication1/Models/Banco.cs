@@ -11,14 +11,6 @@ namespace ESP32.Models
         string user = "sa";
         string senha = "banco";
 
-        public Banco(string hostname, string database, string user, string senha)
-        {
-            this.hostname = hostname;;
-            this.database = database;
-            this.user = user;
-            this.senha = senha;
-        }
-
         public SqlConnection conectarBanco()
         {
             string nome = hostname + @"\" + instancia;
@@ -39,25 +31,6 @@ namespace ESP32.Models
                 Console.WriteLine(ex.ToString());
                 return null;
             }
-        }
-
-        public void rodarComando(SqlConnection connection, string comando)
-        {
-
-            using(SqlCommand query =  new SqlCommand(comando, connection))
-            {
-                int rowsAffected = query.ExecuteNonQuery();
-
-                if (rowsAffected > 0)
-                {
-                    Console.WriteLine("Comando executado");
-                }
-                else
-                {
-                    Console.WriteLine("Comando não executado");
-                }
-            }
-
         }
     }
 }
