@@ -13,16 +13,11 @@ namespace ESP32.Models
 
         public SqlConnection conectarBanco()
         {
-            string nome = hostname + @"\" + instancia;
-            string conexao = $"Server={nome};Database={database};User Id={user};Password={senha};";
-
-            Console.WriteLine(conexao);
-
             try
             {
-                using(SqlConnection connection = new SqlConnection(conexao))
+                using(SqlConnection connection = new SqlConnection(stringConexao()))
                 {
-                    connection.Open();
+                    //connection.ConnectionString = nome;
                     return connection;
 
                 }
@@ -31,6 +26,15 @@ namespace ESP32.Models
                 Console.WriteLine(ex.ToString());
                 return null;
             }
+        }
+
+        public string stringConexao()
+        {
+            string nome = $"{hostname}" + @"\" + $"{instancia}";
+            //string nome = "DESKTOP-RHMLQTH\\SQLEXPRESS";
+            string conexao = $"Server={nome};Database={database};User Id={user};Password={senha};";
+            Console.WriteLine(conexao);
+            return conexao;
         }
     }
 }

@@ -6,18 +6,17 @@ namespace ESP32.Models
 {
     public class MQTT
     {
-        Dispositivo esp {  get; set; }
-        string clienteID { get; set; } //Pedro
-        string servidor {  get; set; } //test.mosquitto.org
-        int porta { get; set; } //1883
-        string topico { get; set; } // espdash/automacao/sensor
+        public string clienteID { get; set; } //Pedro
+        public string servidor {  get; set; } //test.mosquitto.org
+        public int porta { get; set; } //1883
+        public string topico { get; set; } // espdash/automacao/sensor
         IMqttClient mqttClient { get; set; }
 
 
 
-        public MQTT(Dispositivo esp, string clienteID, string servidor, int porta, string topico)
+        public MQTT(string clienteID, string servidor, int porta, string topico)
         {
-            this.esp = esp;
+
             this.clienteID = clienteID;
             this.servidor = servidor;
             this.porta = porta;
@@ -26,6 +25,10 @@ namespace ESP32.Models
             conectarMQTT();
 
         }
+
+        public MQTT() { 
+        
+        }   
 
         async public void conectarMQTT()
         {

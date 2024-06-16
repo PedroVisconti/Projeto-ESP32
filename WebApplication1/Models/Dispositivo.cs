@@ -1,18 +1,29 @@
 ﻿namespace ESP32.Models
 {
-    public class Dispositivo
+    public class Dispositivo : MQTT
     {
-        int id {  get; set; }
-        string nome { get; set; }
-        int latitude { get; set; }
-        int longitude { get; set; }
+        public int id {  get; set; }
+        public string nome { get; set; }
+        public int latitude { get; set; }
+        public int longitude { get; set; }
+        /*
+        public string clienteID { get; set; }
+        public string servidor { get; set; }
+        public int porta { get; set; }
+        public string topico { get; set; }
+        */
 
-        public Dispositivo(int id, string nome, int latitude, int longitude)
+        public Dispositivo(string nome, int latitude, int longitude, string clienteID, string servidor, int porta, string topico) : base(clienteID,  servidor,  porta,  topico)
         {
-            this.id = id;
             this.nome = nome;
             this.latitude = latitude;
             this.longitude = longitude;
+
+        }
+        
+        public Dispositivo()
+        {
+
         }
 
         public void insertDispositivo()

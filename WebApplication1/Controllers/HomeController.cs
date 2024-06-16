@@ -1,5 +1,6 @@
 ﻿using ESP32.Models;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ESP32.Controllers
 {
@@ -7,19 +8,38 @@ namespace ESP32.Controllers
     {
         public IActionResult Index()
         {
-            /*
-            Banco banco = new Banco(Environment.MachineName, "PROJETOESP", "sa", "banco");
-
-            banco.conectarBanco();
-
-            Dispositivo dis = new Dispositivo(1, "Dispositivo1", 12345, -67890);
-
-            MQTT mqtt = new MQTT(dis, "Pedro", "test.mosquitto.org", 1883, "espdash/automacao/sensor");
-            */
-            // int id, string nome, string sobrenome, string login, string senha, string cpf, DateTime data_nascimento
-            Usuario usuario = new Usuario("Pedro");
-
             return View();
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult Cadastro()
+        {
+            return View();
+        }
+
+        public IActionResult Autenticar(string username, string password)
+        {
+            Usuario usuario = new Usuario();
+            if(usuario.realizarLogin(username, password)){
+                return RedirectToAction("Acessado", "Principal");
+            }
+            ViewBag.ErrorMessage = "Usuário ou senha inválidos";
+            return View("Login");
+        }
+
+        public IActionResult Cadastrar(Usuario usuario)
+        {
+            Console.WriteLine(usuario.data_nascimento);
+            if (usuario.inserirUsuario())
+            {
+                return RedirectToAction("Acessado", "Principal");
+            }
+            ViewBag.ErrorMessage = "Usuario não cadastrado";
+            return View("Cadastro");
         }
     }
 }
