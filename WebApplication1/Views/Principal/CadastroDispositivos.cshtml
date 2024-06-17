@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulário de Dados</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,28 +20,32 @@
             margin-bottom: 15px;
         }
 
-            .form-group label {
+        .form-group label {
                 display: block;
                 margin-bottom: 5px;
-            }
+        }
 
-            .form-group input {
+        .form-group input {
                 width: 100%;
                 padding: 8px;
                 box-sizing: border-box;
-            }
+        }
 
-            .form-group button {
+        .form-group button {
                 padding: 10px 15px;
                 background-color: #4CAF50;
                 color: white;
                 border: none;
                 cursor: pointer;
-            }
+        }
 
-                .form-group button:hover {
+        .form-group button:hover {
                     background-color: #45a049;
-                }
+        }
+
+        #map {
+            height: 600px;
+        }
     </style>
 </head>
 <body>
@@ -52,11 +58,11 @@
         </div>
         <div class="form-group">
             <label for="latitude">Latitude</label>
-            <input type="number" id="latitude" name="latitude" required>
+            <input type="text" id="latitude" name="latitude" required>
         </div>
         <div class="form-group">
             <label for="longitude">Longitude</label>
-            <input type="number" id="longitude" name="longitude" required>
+            <input type="text" id="longitude" name="longitude" required>
         </div>
         <div class="form-group">
             <label for="clienteID">Cliente ID</label>
@@ -78,6 +84,32 @@
             <button type="submit">Enviar</button>
         </div>
     </form>
+
+    <div id="map"></div>
+
+    <script>
+        
+        var latitude = document.getElementById('latitude');
+        var longitude = document.getElementById('longitude');
+
+        //-27.06755754208858, -48.88523373438182
+        // Inicializa o mapa e define a visualização inicial
+        var map = L.map('map').setView([-27.06755754208858, -48.88523373438182], 18); // Coordenadas para São Paulo, Brasil
+
+        // Adiciona uma camada de mapa (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Evento de clique no mapa para capturar coordenadas
+        map.on('click', function (e) {
+            latitude.value = e.latlng.lat;
+            longitude.value = e.latlng.lng;
+
+            // Você pode enviar estas coordenadas para o seu servidor ou armazená-las conforme necessário
+        });
+    </script>
+
 
 </body>
 </html>

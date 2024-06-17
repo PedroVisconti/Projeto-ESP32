@@ -16,7 +16,6 @@ namespace ESP32.Models
 
         public Usuario(string nome, string sobrenome, string login, string senha, string cpf, DateTime data_nascimento)
         {
-            this.id = id;
             this.nome = nome;
             this.sobrenome = sobrenome;
             this.login = login;

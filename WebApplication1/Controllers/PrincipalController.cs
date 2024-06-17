@@ -8,6 +8,12 @@ namespace ESP32.Controllers
     {
         public IActionResult Acessado()
         {
+            Dispositivo dispositivo = new Dispositivo();
+
+            List<Dispositivo> dispositivos = new List<Dispositivo>();
+
+            dispositivos = dispositivo.selectDispositivoAll();
+
             return View();
         }
 
@@ -79,7 +85,7 @@ namespace ESP32.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Erro ao cadastrar usuario: " + ex.Message);
+                Console.WriteLine("Erro ao cadastrar dispositivo: " + ex.Message);
                 return false;
             }
         }
