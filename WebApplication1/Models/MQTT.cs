@@ -1,13 +1,14 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
 using System.Text;
+using System.Threading;
 
 namespace ESP32.Models
 {
     public class MQTT
     {
         public string clienteID { get; set; } //Pedro
-        public string servidor {  get; set; } //test.mosquitto.org
+        public string servidor { get; set; } //test.mosquitto.org
         public int porta { get; set; } //1883
         public string topico { get; set; } // espdash/automacao/sensor
         IMqttClient mqttClient { get; set; }
@@ -22,14 +23,12 @@ namespace ESP32.Models
             this.porta = porta;
             this.topico = topico;
 
-            conectarMQTT();
-
         }
 
-        public MQTT() { 
-        
-        }   
+        public MQTT()
+        {
 
+        }
         async public void conectarMQTT()
         {
             var factory = new MqttFactory();
@@ -37,40 +36,77 @@ namespace ESP32.Models
 
 
             var options = new MqttClientOptionsBuilder()
-                .WithClientId(clienteID) 
-                .WithTcpServer(servidor, porta)
-                .WithCleanSession()
+                .WithClientId(this.clienteID)
+                .WithTcpServer(this.servidor, this.porta)
                 .Build();
 
             var connectResult = await mqttClient.ConnectAsync(options);
 
-            if(connectResult.ResultCode == MqttClientConnectResultCode.Success)
+            if (connectResult.ResultCode == MqttClientConnectResultCode.Success)
             {
-                Console.WriteLine($"Conexão realizada com sucesso para: Servidor - {servidor}, Porta - {porta}");
-                inscreverTopico();
+                Console.WriteLine($"Conexão realizada com sucesso para: Servidor - {this.servidor}, Porta - {this.porta}");
 
+                mqttClient.ApplicationMessageReceivedAsync += e =>
+                {
+                    Console.WriteLine("Received application message.");
+                    Console.WriteLine($"+ Topic = {e.ApplicationMessage.Topic}");
+                    Console.WriteLine($"+ Payload = {Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}");
+                    Console.WriteLine($"+ QoS = {e.ApplicationMessage.QualityOfServiceLevel}");
+                    Console.WriteLine($"+ Retain = {e.ApplicationMessage.Retain}");
+                    return Task.CompletedTask;
+                };
+
+                inscreverTopico();
             }
             else
             {
-                Console.WriteLine($"Erro na conexão para: Servidor - {servidor}, Porta - {porta}");
+                Console.WriteLine($"Erro na conexão para: Servidor - {this.servidor}, Porta - {this.porta}");
             }
 
         }
 
-        async public void inscreverTopico()
+        public void inscreverTopico()
         {
             try
             {
-                var subscribeResult = await mqttClient.SubscribeAsync(topico);
-                Console.WriteLine($"Inscrito no tópico com sucesso.");
+                var subscribeResult = mqttClient.SubscribeAsync(this.topico);
+                Console.WriteLine($"Inscrito no tópico com sucesso.{this.topico}");
 
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Falha ao inscrever no tópico. {ex.Message}");
             }
-            
 
+        }
+
+        async public void EnviarMensagem()
+        {
+            var factory = new MqttFactory();
+            mqttClient = factory.CreateMqttClient();
+
+            var options = new MqttClientOptionsBuilder()
+                .WithClientId(this.clienteID)
+                .WithTcpServer(this.servidor, this.porta)
+                .Build();
+
+            await mqttClient.ConnectAsync(options);
+
+            await Task.Delay(10000);
+
+            string message = "Teste MQTT";
+
+            var mqttMessage = new MqttApplicationMessageBuilder()
+            .WithTopic(this.topico)
+            .WithPayload(message)
+            .Build();
+
+
+
+            await mqttClient.PublishAsync(mqttMessage);
+
+            await mqttClient.DisconnectAsync();
+            Console.WriteLine("Enviou");
         }
 
     }

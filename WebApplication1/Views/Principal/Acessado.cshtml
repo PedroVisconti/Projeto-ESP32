@@ -1,7 +1,129 @@
-﻿@{
-    ViewData["Title"] = "Logado";
-}
+﻿@model ESP32.Models.ModelsView.AcessadoViewModel
 
-<h1>ACESSADO</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tela de acesso</title>
+    <!-- Carregar a biblioteca Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
 
-<a asp-controller="Principal" asp-action="CadastroDispositivos">Cadastro Dispositivos</a>
+    <a asp-controller="Principal" asp-action="CadastroDispositivos">Cadastro Dispositivos</a>
+
+    <h2>
+
+    </h2>
+
+    <h1>Gráficos de Luminosidade e Temperatura</h1>
+
+    <div style="max-width: 600px;">
+        <!-- Gráfico de Luminosidade -->
+        <canvas id="chartLuminosidade" width="600" height="300"></canvas>
+    </div>
+
+
+    <div style="max-width: 600px; margin-top: 20px;">
+        <!-- Gráfico de Temperatura -->
+        <canvas id="chartTemperatura" width="600" height="300"></canvas>
+    </div>
+
+    <script>
+        // Script para criar o gráfico de Luminosidade
+        var luminosidadeData = @Html.Raw(Model.JsonLuminosidade);
+
+        var luminosidadeLabels = luminosidadeData.map(function (item) {
+            return item.data;
+        });
+
+        var luminosidadeValues = luminosidadeData.map(function (item) {
+            return item.luminosidade;
+        });
+
+        var ctxLuminosidade = document.getElementById('chartLuminosidade').getContext('2d');
+        var chartLuminosidade = new Chart(ctxLuminosidade, {
+            type: 'line',
+            data: {
+                labels: luminosidadeLabels,
+                datasets: [{
+                    label: 'Luminosidade',
+                    data: luminosidadeValues,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit: 'day'
+                        },
+                        ticks: {
+                            maxTicksLimit: 10 // Limita o número de ticks no eixo x
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            suggestedMax: 100 // Ajuste o valor conforme necessário para o gráfico de luminosidade
+                        }
+                    }]
+                }
+            }
+        });
+
+        // Script para criar o gráfico de Temperatura
+        var temperaturaData = @Html.Raw(Model.JsonTemperatura);
+
+        var temperaturaLabels = temperaturaData.map(function (item) {
+            return item.data;
+        });
+
+        var temperaturaValues = temperaturaData.map(function (item) {
+            return item.temperatura;
+        });
+
+        var ctxTemperatura = document.getElementById('chartTemperatura').getContext('2d');
+        var chartTemperatura = new Chart(ctxTemperatura, {
+            type: 'line',
+            data: {
+                labels: temperaturaLabels,
+                datasets: [{
+                    label: 'Temperatura',
+                    data: temperaturaValues,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit: 'day'
+                        },
+                        ticks: {
+                            maxTicksLimit: 10 // Limita o número de ticks no eixo x
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            max: 40 // Ajuste o valor conforme necessário para o gráfico de temperatura
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+
+
+</body>
+</html>
