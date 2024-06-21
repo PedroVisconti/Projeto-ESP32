@@ -11,6 +11,17 @@ namespace ESP32.Models
         DateTime data {  get; set; }
 
 
+        public Temperatura(int id_dispositivo, int temperatura, DateTime data)
+        {
+            this.id_dispositivo = id_dispositivo;
+            this.temperatura = temperatura;
+            this.data = data;
+        }
+
+        public Temperatura() { 
+        
+        }
+
         public string selectTemperaturaJson()
         {
             Banco banco = new Banco();
@@ -58,6 +69,11 @@ namespace ESP32.Models
                 Console.WriteLine(ex.ToString());
                 return null;
             }
+        }
+
+        public void salvarTemperatura()
+        {
+
         }
     }
 }

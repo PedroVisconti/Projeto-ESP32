@@ -10,6 +10,17 @@ namespace ESP32.Models
         int luminosidade { get; set; }
         DateTime data {  get; set; }
 
+        public Luminosidade(int id_dispositivo, int luminosidade, DateTime data)
+        {
+            this.id_dispositivo = id_dispositivo;
+            this.luminosidade = luminosidade;
+            this.data = data;
+        }
+
+        public Luminosidade() { 
+
+        }
+
         public string selectLuminosidadeJson()
         {
             Banco banco = new Banco();
@@ -57,6 +68,11 @@ namespace ESP32.Models
                 Console.WriteLine(ex.ToString());
                 return null;
             }
+        }
+
+        public void salvarLuminosidade()
+        {
+
         }
 
     }

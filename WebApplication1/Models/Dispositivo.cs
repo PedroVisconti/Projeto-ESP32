@@ -130,6 +130,7 @@ namespace ESP32.Models
                                 nome = reader.GetString(reader.GetOrdinal("nome")),
                                 latitude = reader.GetInt64(reader.GetOrdinal("latitude")),
                                 longitude = reader.GetInt64(reader.GetOrdinal("longitude")),
+                                id_dispositivo = reader.GetInt32(reader.GetOrdinal("id_dispositivo")),
                                 clienteID = reader.GetString(reader.GetOrdinal("clienteID")),
                                 servidor = reader.GetString(reader.GetOrdinal("servidor")),
                                 porta = reader.GetInt32(reader.GetOrdinal("porta")),

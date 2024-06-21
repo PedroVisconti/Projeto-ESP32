@@ -1,5 +1,7 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Threading;
 
@@ -7,6 +9,7 @@ namespace ESP32.Models
 {
     public class MQTT
     {
+        public int id_dispositivo {  get; set; }
         public string clienteID { get; set; } //Pedro
         public string servidor { get; set; } //test.mosquitto.org
         public int porta { get; set; } //1883
@@ -51,8 +54,27 @@ namespace ESP32.Models
                     Console.WriteLine("Received application message.");
                     Console.WriteLine($"+ Topic = {e.ApplicationMessage.Topic}");
                     Console.WriteLine($"+ Payload = {Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}");
-                    Console.WriteLine($"+ QoS = {e.ApplicationMessage.QualityOfServiceLevel}");
-                    Console.WriteLine($"+ Retain = {e.ApplicationMessage.Retain}");
+                    JObject json = JObject.Parse(Encoding.UTF8.GetString(e.ApplicationMessage.Payload));
+                    string tipoSensor = (string)json["sensor"];
+                    int valorSensor = (int)json["valor"];
+
+                    Console.WriteLine(" TIPO DO SENSOR: " + tipoSensor  + ", VALOR: " + valorSensor);
+    
+                    if(tipoSensor == "luz")
+                    {
+                        Luminosidade luminosidade = new Luminosidade(this.id_dispositivo, valorSensor, DateTime.Now);
+                        luminosidade.salvarLuminosidade();
+
+                    }
+                    else
+                    {
+
+                        Temperatura temperatura = new Temperatura(this.id_dispositivo, valorSensor, DateTime.Now);
+                        temperatura.salvarTemperatura();
+
+                    }
+
+
                     return Task.CompletedTask;
                 };
 
