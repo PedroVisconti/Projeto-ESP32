@@ -1,33 +1,36 @@
 ﻿@{
     ViewData["Title"] = "Cadastro";
 }
-
-<h2>Cadastro</h2>
-
-<form asp-controller="Home" asp-action="Cadastrar" method="post">
-    <div class="form-group">
-        <label for="nome">Nome</label>
-        <input type="text" class="form-control" id="nome" name="nome" required>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <img src="~/img/criancas-fazendo-robo.jpg" alt="Imagem de fundo">
+        </div>
+        <div class="container-cadastro">
+            <form asp-controller="Home" asp-action="Cadastrar" method="post">
+                 <label for="nome">Nome</label>
+                 <input type="text" class="form-control" id="nome" name="nome" required>
+                 <label for="sobrenome">Sobrenome</label>
+                 <input type="text" class="form-control" id="sobrenome" name="sobrenome" required>
+                 <label for="login">Login</label>
+                 <input type="text" class="form-control" id="login" name="login" required>
+                 <label for="senha">Senha</label>
+                 <input type="password" class="form-control" id="senha" name="senha" required>
+                 <label for="cpf">CPF</label>
+                 <input type="text" class="form-control" id="cpf" name="cpf" required>
+                 <label for="data_nascimento">Data de Nascimento</label>
+                 <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" required>   
+            </form>
+            <button type="submit" class="btn-cadastro">Cadastrar</button>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="sobrenome">Sobrenome</label>
-        <input type="text" class="form-control" id="sobrenome" name="sobrenome" required>
-    </div>
-    <div class="form-group">
-        <label for="login">Login</label>
-        <input type="text" class="form-control" id="login" name="login" required>
-    </div>
-    <div class="form-group">
-        <label for="senha">Senha</label>
-        <input type="password" class="form-control" id="senha" name="senha" required>
-    </div>
-    <div class="form-group">
-        <label for="cpf">CPF</label>
-        <input type="text" class="form-control" id="cpf" name="cpf" required>
-    </div>
-    <div class="form-group">
-        <label for="data_nascimento">Data de Nascimento</label>
-        <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Cadastrar</button>
-</form>
+</body>
+</html>
