@@ -73,7 +73,34 @@ namespace ESP32.Models
 
         public void salvarTemperatura()
         {
+            Banco banco = new Banco();
+            SqlConnection connection;
+            try
+            {
 
+                using (connection = new SqlConnection(banco.stringConexao()))
+                {
+                    connection.Open();
+                    int dispositivoId = 0;
+                    string query = "insert into temperatura (id_dispositivo, temperatura, data) VALUES (@id_dispositivo, @temperatura, @data);";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@id_dispositivo", this.id_dispositivo);
+                    command.Parameters.AddWithValue("@temperatura", this.temperatura);
+                    command.Parameters.AddWithValue("@data", DateTime.Now);
+
+                    command.ExecuteNonQuery();
+
+                    Console.WriteLine("SALVO TEMPERATURA");
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao cadastrar temperatura: " + ex.Message);
+            }
         }
     }
+    
 }

@@ -6,8 +6,8 @@ namespace ESP32.Models
     {
         public int id {  get; set; }
         public string nome { get; set; }
-        public long latitude { get; set; }
-        public long longitude { get; set; }
+        public double latitude { get; set; }
+        public double longitude { get; set; }
         /*
         public string clienteID { get; set; }
         public string servidor { get; set; }
@@ -15,7 +15,7 @@ namespace ESP32.Models
         public string topico { get; set; }
         */
 
-        public Dispositivo(string nome, long latitude, long longitude, string clienteID, string servidor, int porta, string topico) : base(clienteID,  servidor,  porta,  topico)
+        public Dispositivo(string nome, double latitude, double longitude, string clienteID, string servidor, int porta, string topico) : base(clienteID,  servidor,  porta,  topico)
         {
             this.nome = nome;
             this.latitude = latitude;

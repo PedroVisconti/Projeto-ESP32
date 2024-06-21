@@ -72,7 +72,33 @@ namespace ESP32.Models
 
         public void salvarLuminosidade()
         {
+            Banco banco = new Banco();
+            SqlConnection connection;
+            try
+            {
 
+                using (connection = new SqlConnection(banco.stringConexao()))
+                {
+                    connection.Open();
+                    int dispositivoId = 0;
+                    string query = "insert into luminosidade (id_dispositivo, luminosidade, data) VALUES (@id_dispositivo, @luminosidade, @data);";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@id_dispositivo", this.id_dispositivo);
+                    command.Parameters.AddWithValue("@luminosidade", this.luminosidade);
+                    command.Parameters.AddWithValue("@data", DateTime.Now);
+
+                    command.ExecuteNonQuery();
+
+                    Console.WriteLine("SALVO LUMINOSIDADE");
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao cadastrar luminosidade: " + ex.Message);
+            }
         }
 
     }

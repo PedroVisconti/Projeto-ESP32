@@ -28,6 +28,34 @@
         <canvas id="chartTemperatura" width="600" height="300"></canvas>
     </div>
 
+    <h2>Lista de dispositivos</h2>
+
+    @foreach (Dispositivo dispositivo in Model.dispositivos)
+    {
+
+        <div class="device-card">
+            <p class="card-text"><strong>ID:</strong> @dispositivo.id</p>
+            <p class="card-text"><strong>Nome:</strong> @dispositivo.nome</p>
+            <p class="card-text"><strong>Longitude:</strong> @dispositivo.longitude</p>
+            <p class="card-text"><strong>Latitude:</strong> @dispositivo.latitude</p>
+
+            <form asp-controller="Principal" asp-action="EditarDispositivo" method="post">
+                <input type="hidden" id="id" name="id" value="@dispositivo.id" />
+                <input type="hidden" id="nome" name="nome" value="@dispositivo.nome" />
+                <input type="hidden" id="longitude" name="longitude" value="@dispositivo.longitude" />
+                <input type="hidden" id="latitude" name="latitude" value="@dispositivo.latitude" />
+                <input type="hidden" id="latitude" name="clienteID" value="@dispositivo.clienteID" />
+                <input type="hidden" id="latitude" name="servidor" value="@dispositivo.servidor" />
+                <input type="hidden" id="latitude" name="porta" value="@dispositivo.porta" />
+                <input type="hidden" id="latitude" name="topico" value="@dispositivo.topico" />
+
+                <button class="btn btn-primary" type="submit">Editar</button>
+            </form>
+            <p>========================================================================</p>
+        </div>
+    }
+
+
     <script>
         // Script para criar o gráfico de Luminosidade
         var luminosidadeData = @Html.Raw(Model.JsonLuminosidade);

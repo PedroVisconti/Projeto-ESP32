@@ -39,6 +39,11 @@ namespace ESP32.Controllers
             return View();
         }
 
+        public IActionResult EditarDispositivo(Dispositivo dispositivoEditar)
+        {
+            return View(dispositivoEditar);
+        }
+
         public IActionResult salvarDispositivo(Dispositivo dispositivo)
         {
            bool salvo =  dispositivo.salvarDispositivo(dispositivo);

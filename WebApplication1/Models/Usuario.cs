@@ -111,8 +111,7 @@ namespace ESP32.Models
                     {
                         Console.WriteLine("Inserção bem-sucedida!");
                         connection.Close();
-                        //return realizarLogin(this.login, this.senha);
-                        return true;
+                        return realizarLogin(this.login, this.senha);
                     }
                     else
                     {
