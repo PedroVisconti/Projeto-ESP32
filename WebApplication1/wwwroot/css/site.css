@@ -11,6 +11,7 @@ body{
     width: 100%;
 }
 
+
 .image-container {
     flex: 1;
     display: flex;
@@ -34,6 +35,8 @@ body{
     background-color:antiquewhite;
 }
 
+
+
 .buttons-container a {
         display: block;
         width: 200px;
@@ -46,3 +49,61 @@ body{
         border-radius: 5px;
    }
 
+
+.container-login {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: antiquewhite;
+}
+
+
+.btn-login, .btn-cadastro {
+    padding: 15px;
+    background-color: black;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    width: 200px;
+    text-align: center;
+}
+
+.container-login input[type="text"],
+.container-login input[type="password"] {
+    width: 400px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.container-cadastro {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: antiquewhite;
+}
+
+.container-cadastro label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        width:400px;
+    }
+
+.container-cadastro input[type="text"],
+.container-cadastro input[type="password"],
+.container-cadastro input[type="date"] {
+        width: calc(100% - 10px); /* Ajuste para compensar o padding */
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
