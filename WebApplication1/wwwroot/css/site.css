@@ -61,12 +61,12 @@ body{
 
 
 .btn-login, .btn-cadastro {
-    padding: 15px;
+    padding: 10px;
     background-color: black;
     color: white;
     text-decoration: none;
     border-radius: 5px;
-    width: 200px;
+    width: 100%;
     text-align: center;
 }
 
@@ -100,7 +100,7 @@ body{
 .container-cadastro input[type="text"],
 .container-cadastro input[type="password"],
 .container-cadastro input[type="date"] {
-        width: calc(100% - 10px); /* Ajuste para compensar o padding */
+        width: 100%;
         padding: 8px;
         margin-bottom: 10px;
         border: 1px solid #ccc;
