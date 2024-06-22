@@ -68,6 +68,7 @@ body{
     border-radius: 5px;
     width: 100%;
     text-align: center;
+    font-size:18px;
 }
 
 .container-login input[type="text"],
@@ -97,9 +98,10 @@ body{
         width:400px;
     }
 
-.container-cadastro input[type="text"],
-.container-cadastro input[type="password"],
-.container-cadastro input[type="date"] {
+    .container-cadastro input[type="text"],
+    .container-cadastro input[type="password"],
+    .container-cadastro input[type="date"],
+    .container-cadastro input[type="number"] {
         width: 100%;
         padding: 8px;
         margin-bottom: 10px;
@@ -107,3 +109,8 @@ body{
         border-radius: 4px;
         box-sizing: border-box;
     }
+
+#map{
+    height: auto;
+    width: 50%;
+}

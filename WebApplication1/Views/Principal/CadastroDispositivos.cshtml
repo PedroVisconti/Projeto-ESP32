@@ -1,100 +1,49 @@
 ﻿@{
-    ViewData["Title"] = "Logado";
+    ViewData["Title"] = "Formulário de cadastro";
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Dados</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-                display: block;
-                margin-bottom: 5px;
-        }
-
-        .form-group input {
-                width: 100%;
-                padding: 8px;
-                box-sizing: border-box;
-        }
-
-        .form-group button {
-                padding: 10px 15px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                cursor: pointer;
-        }
-
-        .form-group button:hover {
-                    background-color: #45a049;
-        }
-
-        #map {
-            height: 600px;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
+
 <body>
-
-    <h1>Preencher Dados</h1>
-    <form asp-controller="Principal" asp-action="SalvarDispositivo" method="post">
-        <div class="form-group">
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" required>
+    <div class="container">
+        <div id="map"></div>
+        <div class="container-cadastro">
+            <h1>Cadastrar Dispositivo</h1>
+            <form asp-controller="Principal" asp-action="SalvarDispositivo" method="post">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" required>
+                <label for="latitude">Latitude</label>
+                <input type="number" id="latitude" name="latitude" step="0.000000000000001" required>
+                <label for="longitude">Longitude</label>
+                <input type="number" id="longitude" name="longitude" step="0.000000000000001" required>
+                <label for="clienteID">Cliente ID</label>
+                <input type="text" id="clienteID" name="clienteID" required>
+                <label for="servidor">Servidor</label>
+                <input type="text" id="servidor" name="servidor" required>
+                <label for="porta">Porta</label>
+                <input type="number" id="porta" name="porta" required>
+                <label for="topico">Tópico</label>
+                <input type="text" id="topico" name="topico" required>
+                <button type="submit" class="btn-cadastro">Enviar</button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="latitude">Latitude</label>
-            <input type="number" id="latitude" name="latitude" step="0.000000000000001" required>
-        </div>
-        <div class="form-group">
-            <label for="longitude">Longitude</label>
-            <input type="number" id="longitude" name="longitude" step="0.000000000000001" required>
-        </div>
-        <div class="form-group">
-            <label for="clienteID">Cliente ID</label>
-            <input type="text" id="clienteID" name="clienteID" required>
-        </div>
-        <div class="form-group">
-            <label for="servidor">Servidor</label>
-            <input type="text" id="servidor" name="servidor" required>
-        </div>
-        <div class="form-group">
-            <label for="porta">Porta</label>
-            <input type="number" id="porta" name="porta" required>
-        </div>
-        <div class="form-group">
-            <label for="topico">Tópico</label>
-            <input type="text" id="topico" name="topico" required>
-        </div>
-        <div class="form-group">
-            <button type="submit">Enviar</button>
-        </div>
-    </form>
-
-    <div id="map"></div>
-
+    </div>
     <script>
-        
         var latitude = document.getElementById('latitude');
         var longitude = document.getElementById('longitude');
 
-        //-27.06755754208858, -48.88523373438182
         // Inicializa o mapa e define a visualização inicial
-        var map = L.map('map').setView([-27.06755754208858, -48.88523373438182], 18); // Coordenadas para São Paulo, Brasil
+        var map = L.map('map').setView([-27.06755754208858, -48.88523373438182], 18);
 
         // Adiciona uma camada de mapa (OpenStreetMap)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -106,10 +55,9 @@
             latitude.value = e.latlng.lat;
             longitude.value = e.latlng.lng;
 
-            // Você pode enviar estas coordenadas para o seu servidor ou armazená-las conforme necessário
+
         });
     </script>
-
-
 </body>
+
 </html>

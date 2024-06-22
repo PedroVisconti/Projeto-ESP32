@@ -1,20 +1,20 @@
-﻿@model ESP32.Models.ModelsView.AcessadoViewModel
+﻿@{
+    ViewData["Title"] = "Principal";
+}
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
+
 <head>
-    <title>Tela de acesso</title>
-    <!-- Carregar a biblioteca Chart.js -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-<body>
 
     <a asp-controller="Principal" asp-action="CadastroDispositivos">Cadastro Dispositivos</a>
-
-    <h2>
-
-    </h2>
-
+    <div class="container">
     <h1>Gráficos de Luminosidade e Temperatura</h1>
 
     <div style="max-width: 600px;">
@@ -55,7 +55,7 @@
         </div>
     }
 
-
+</div>
     <script>
         // Script para criar o gráfico de Luminosidade
         var luminosidadeData = @Html.Raw(Model.JsonLuminosidade);
