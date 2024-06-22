@@ -6,8 +6,10 @@ namespace ESP32.Models
     {
         public int id {  get; set; }
         public string nome { get; set; }
-        public double latitude { get; set; }
-        public double longitude { get; set; }
+        public string latitude { get; set; }
+        public string longitude { get; set; }
+
+        public int excluido { get; set; }
         /*
         public string clienteID { get; set; }
         public string servidor { get; set; }
@@ -15,7 +17,7 @@ namespace ESP32.Models
         public string topico { get; set; }
         */
 
-        public Dispositivo(string nome, double latitude, double longitude, string clienteID, string servidor, int porta, string topico) : base(clienteID,  servidor,  porta,  topico)
+        public Dispositivo(string nome, string latitude, string longitude, string clienteID, string servidor, int porta, string topico) : base(clienteID,  servidor,  porta,  topico)
         {
             this.nome = nome;
             this.latitude = latitude;
@@ -39,7 +41,7 @@ namespace ESP32.Models
                 {
                     connection.Open();
                     int dispositivoId = 0;
-                    string query = "INSERT INTO dispositivos (nome, latitude, longitude) VALUES (@nome, @latitude, @longitude); SELECT SCOPE_IDENTITY();";
+                    string query = "INSERT INTO dispositivos (nome, latitude, longitude, excluido) VALUES (@nome, @latitude, @longitude, 0); SELECT SCOPE_IDENTITY();";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@nome", dispositivo.nome);
                     command.Parameters.AddWithValue("@latitude", dispositivo.latitude);
@@ -96,13 +98,61 @@ namespace ESP32.Models
             }
         }
 
-        public void alterDispositivo()
+        public bool alterDispositivo()
         {
+            Banco banco = new Banco();
+            SqlConnection connection;
+            try
+            {
 
+                using (connection = new SqlConnection(banco.stringConexao()))
+                {
+                    connection.Open();
+                    int dispositivoId = 0;
+                    string query = $"update dispositivos set latitude = {this.latitude}, longitude = {this.longitude}, nome = '{this.nome}' where id_dispositivo = {this.id} ";
+                    SqlCommand command = new SqlCommand(query, connection);
+
+                    command.ExecuteNonQuery();
+                    Console.WriteLine($"Dispositivo: ID - {this.id},  NOME - {this.nome}");
+                    return true;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao cadastrar dispositivo: " + ex.Message);
+                return false;
+            }
         }
 
-        public void selectDispositivoId(int id)
+
+        public bool excluirDispositivo(int id)
         {
+            Banco banco = new Banco();
+            SqlConnection connection;
+            try
+            {
+
+                using (connection = new SqlConnection(banco.stringConexao()))
+                {
+                    connection.Open();
+                    int dispositivoId = 0;
+                    string query = $"update dispositivos set excluido = 1 where id_dispositivo = {id} ";
+                    SqlCommand command = new SqlCommand(query, connection);
+
+                    command.ExecuteNonQuery();
+                    Console.WriteLine($"Dispositivo excluido: ID - {this.id}");
+                    return true;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao excluir dispositivo: " + ex.Message);
+                return false;
+            }
 
         }
 
@@ -118,7 +168,7 @@ namespace ESP32.Models
                 {
 
                     connection.Open();
-                    string query = "select * from dispositivos d left join MQTT_Dispositivo mqtt on d.id_dispositivo = mqtt.id_dispositivo";
+                    string query = "select * from dispositivos d left join MQTT_Dispositivo mqtt on d.id_dispositivo = mqtt.id_dispositivo where d.excluido <> 1";
                     SqlCommand command = new SqlCommand(query, connection);
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -128,8 +178,8 @@ namespace ESP32.Models
                             {
                                 id = reader.GetInt32(reader.GetOrdinal("id_dispositivo")),
                                 nome = reader.GetString(reader.GetOrdinal("nome")),
-                                latitude = reader.GetInt64(reader.GetOrdinal("latitude")),
-                                longitude = reader.GetInt64(reader.GetOrdinal("longitude")),
+                                latitude = reader.GetString(reader.GetOrdinal("latitude")),
+                                longitude = reader.GetString(reader.GetOrdinal("longitude")),
                                 id_dispositivo = reader.GetInt32(reader.GetOrdinal("id_dispositivo")),
                                 clienteID = reader.GetString(reader.GetOrdinal("clienteID")),
                                 servidor = reader.GetString(reader.GetOrdinal("servidor")),
