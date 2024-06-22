@@ -1,95 +1,44 @@
-﻿@model ESP32.Models.Dispositivo
+﻿@model ESP32.Models.Dispositivo @{ ViewData["Title"] = "Editar dispositivo"; }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Dados</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-                display: block;
-                margin-bottom: 5px;
-        }
-
-        .form-group input {
-                width: 100%;
-                padding: 8px;
-                box-sizing: border-box;
-        }
-
-        .form-group button {
-                padding: 10px 15px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                cursor: pointer;
-        }
-
-        .form-group button:hover {
-                    background-color: #45a049;
-        }
-
-        #map {
-            height: 600px;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
+  
 <body>
+    <div class="container">
+        <div id="map"></div>
+        <div class="container-cadastro">
+            <h1>Editar Dispositivo</h1>
+            <form asp-controller="Principal" asp-action="SalvarDispositivo" method="post">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" value="@Model.nome" required>
+                <label for="latitude">Latitude</label>
+                <input type="number" id="latitude" name="latitude" step="0.000000000000001" value="@Model.latitude" required>
+                <label for="longitude">Longitude</label>
+                <input type="number" id="longitude" name="longitude" step="0.000000000000001" value="@Model.longitude" required>
+                <label for="clienteID">Cliente ID</label>
+                <input type="text" id="clienteID" name="clienteID" value="@Model.clienteID" required>
+                <label for="servidor">Servidor</label>
+                <input type="text" id="servidor" name="servidor" value="@Model.servidor" required>
+                <label for="porta">Porta</label>
+                <input type="number" id="porta" name="porta" value="@Model.porta" required>
+                <label for="topico">Tópico</label>
+                <input type="text" id="topico" name="topico" value="@Model.topico" required>
+                <button type="submit" class="btn-cadastro">Enviar</button>
+            </form>
 
-    <h1>Preencher Dados</h1>
-    <form asp-controller="Principal" asp-action="salvarDispositivoEditado" method="post">
-        <div class="form-group">
-            <input type="hidden" id="id" name="id" value="@Model.id">
         </div>
-        <div class="form-group">
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" value="@Model.nome" required>
-        </div>
-        <div class="form-group">
-            <label for="latitude">Latitude</label>
-            <input type="text" id="latitude" name="latitude" step="0.000000000000001" value="@Model.latitude" required>
-        </div>
-        <div class="form-group">
-            <label for="longitude">Longitude</label>
-            <input type="text" id="longitude" name="longitude" step="0.000000000000001" value="@Model.longitude" required>
-        </div>
-        <div class="form-group">
-            <label for="clienteID">Cliente ID</label>
-            <input type="text" id="clienteID" name="clienteID" value="@Model.clienteID" disabled>
-        </div>
-        <div class="form-group">
-            <label for="servidor">Servidor</label>
-            <input type="text" id="servidor" name="servidor" value="@Model.servidor" disabled>
-        </div>
-        <div class="form-group">
-            <label for="porta">Porta</label>
-            <input type="number" id="porta" name="porta" value="@Model.porta" disabled>
-        </div>
-        <div class="form-group">
-            <label for="topico">Tópico</label>
-            <input type="text" id="topico" name="topico" value="@Model.topico" disabled>
-        </div>
-        <div class="form-group">
-            <button type="submit">Enviar</button>
-        </div>
-    </form>
-
-    <div id="map"></div>
+    </div>
 
     <script>
-        
         var latitude = document.getElementById('latitude');
         var longitude = document.getElementById('longitude');
 
@@ -113,4 +62,5 @@
 
 
 </body>
+
 </html>

@@ -1,10 +1,14 @@
-﻿@model ESP32.Models.ModelsView.AcessadoViewModel
+﻿@{
+    ViewData["Title"] = "Principal";
+}
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
+
 <head>
-    <title>Tela de acesso</title>
-    <!-- Carregar a biblioteca Chart.js -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Inclua o CSS do Leaflet -->
@@ -14,14 +18,9 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 </head>
-<body>
 
     <a asp-controller="Principal" asp-action="CadastroDispositivos">Cadastro Dispositivos</a>
-
-    <h2>
-
-    </h2>
-
+    <div class="container">
     <h1>Gráficos de Luminosidade e Temperatura</h1>
 
     <div style="max-width: 600px;">
@@ -68,10 +67,12 @@
         </div>
     }
 
+
     <h2>Mapa Dispositivos</h2>
 
     <div id="map" style="height: 400px;"></div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
     <script>
         // Script para criar o gráfico de Luminosidade
         var luminosidadeData = @Html.Raw(Model.JsonLuminosidade);
