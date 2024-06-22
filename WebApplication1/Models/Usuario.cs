@@ -111,7 +111,7 @@ namespace ESP32.Models
                     {
                         Console.WriteLine("Inserção bem-sucedida!");
                         connection.Close();
-                        return realizarLogin(this.login, this.senha);
+                        return true;
                     }
                     else
                     {
@@ -128,16 +128,6 @@ namespace ESP32.Models
                 Console.WriteLine("Erro ao cadastrar usuario: " + ex.Message);
                 return false;
             }
-        }
-
-        public void alterarUsuario()
-        {
-
-        }
-
-        public void selectUsuarioID(int id)
-        {
-
         }
 
         static string CriptografarSenha(string senha)

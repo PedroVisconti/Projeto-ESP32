@@ -36,7 +36,7 @@ namespace ESP32.Controllers
             Console.WriteLine(usuario.data_nascimento);
             if (usuario.inserirUsuario())
             {
-                return RedirectToAction("Acessado", "Principal");
+                return View("Index");
             }
             ViewBag.ErrorMessage = "Usuario não cadastrado";
             return View("Cadastro");

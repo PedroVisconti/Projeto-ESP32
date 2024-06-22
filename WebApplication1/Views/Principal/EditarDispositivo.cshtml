@@ -1,4 +1,7 @@
-﻿@model ESP32.Models.Dispositivo @{ ViewData["Title"] = "Editar dispositivo"; }
+﻿@model ESP32.Models.Dispositivo 
+@{
+    ViewData["Title"] = "Editar dispositivo"; 
+}
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -17,7 +20,8 @@
         <div id="map"></div>
         <div class="container-cadastro">
             <h1>Editar Dispositivo</h1>
-            <form asp-controller="Principal" asp-action="SalvarDispositivo" method="post">
+            <form asp-controller="Principal" asp-action="salvarDispositivoEditado" method="post">
+                <input type="hidden" id="id" name="id" value="@Model.id"/>
                 <label for="nome">Nome</label>
                 <input type="text" id="nome" name="nome" value="@Model.nome" required>
                 <label for="latitude">Latitude</label>
@@ -25,13 +29,13 @@
                 <label for="longitude">Longitude</label>
                 <input type="text" id="longitude" name="longitude" step="0.000000000000001" value="@Model.longitude" required>
                 <label for="clienteID">Cliente ID</label>
-                <input type="text" id="clienteID" name="clienteID" value="@Model.clienteID" required>
+                <input type="text" id="clienteID" name="clienteID" value="@Model.clienteID" disabled>
                 <label for="servidor">Servidor</label>
-                <input type="text" id="servidor" name="servidor" value="@Model.servidor" required>
+                <input type="text" id="servidor" name="servidor" value="@Model.servidor" disabled>
                 <label for="porta">Porta</label>
-                <input type="number" id="porta" name="porta" value="@Model.porta" required>
+                <input type="number" id="porta" name="porta" value="@Model.porta" disabled>
                 <label for="topico">Tópico</label>
-                <input type="text" id="topico" name="topico" value="@Model.topico" required>
+                <input type="text" id="topico" name="topico" value="@Model.topico" disabled>
                 <button type="submit" class="btn-cadastro">Enviar</button>
             </form>
 

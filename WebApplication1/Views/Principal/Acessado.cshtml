@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ESP32.Models.ModelsView.AcessadoViewModel
+
+@{
     ViewData["Title"] = "Principal";
 }
 
@@ -18,7 +20,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 </head>
-
+<body>
     <a asp-controller="Principal" asp-action="CadastroDispositivos">Cadastro Dispositivos</a>
     <div class="container">
     <h1>Gráficos de Luminosidade e Temperatura</h1>
@@ -60,7 +62,6 @@
 
             <form asp-controller="Principal" asp-action="excluirDispositivo" method="post">
                 <input type="hidden" id="id" name="id" value="@dispositivo.id" />
-
                 <button class="btn btn-primary" type="submit">Excluir</button>
             </form>
             <p>========================================================================</p>

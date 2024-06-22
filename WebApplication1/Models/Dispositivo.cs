@@ -24,7 +24,16 @@ namespace ESP32.Models
             this.longitude = longitude;
 
         }
-        
+
+        public Dispositivo(int id, string nome, string latitude, string longitude, string clienteID, string servidor, int porta, string topico) : base(clienteID, servidor, porta, topico)
+        {
+            this.id = id;
+            this.nome = nome;
+            this.latitude = latitude;
+            this.longitude = longitude;
+
+        }
+
         public Dispositivo()
         {
 
@@ -108,7 +117,6 @@ namespace ESP32.Models
                 using (connection = new SqlConnection(banco.stringConexao()))
                 {
                     connection.Open();
-                    int dispositivoId = 0;
                     string query = $"update dispositivos set latitude = {this.latitude}, longitude = {this.longitude}, nome = '{this.nome}' where id_dispositivo = {this.id} ";
                     SqlCommand command = new SqlCommand(query, connection);
 
