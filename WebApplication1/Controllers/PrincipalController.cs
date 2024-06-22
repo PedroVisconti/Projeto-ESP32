@@ -44,6 +44,13 @@ namespace ESP32.Controllers
             return View(dispositivoEditar);
         }
 
+        public IActionResult salvarDispositivoEditado(Dispositivo dispositivoEditado)
+        {
+            dispositivoEditado.alterDispositivo();
+
+            return RedirectToAction("Acessado", "Principal");
+        }
+
         public IActionResult salvarDispositivo(Dispositivo dispositivo)
         {
            bool salvo =  dispositivo.salvarDispositivo(dispositivo);
@@ -57,6 +64,13 @@ namespace ESP32.Controllers
                 Console.WriteLine("Ocorreu um erro ao salvar o Dispositivo");
                 return RedirectToAction("salvarDispositivo", "Principal");
             }
+        }
+
+        public IActionResult excluirDispositivo(int id)
+        {
+            dispositivo.excluirDispositivo(id);
+
+            return RedirectToAction("Acessado", "Principal");
         }
     }
 }

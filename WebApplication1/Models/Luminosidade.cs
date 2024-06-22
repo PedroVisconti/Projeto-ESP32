@@ -34,7 +34,7 @@ namespace ESP32.Models
 
                     connection.Open();
                     string query = "select d.id_dispositivo, d.nome, l.luminosidade, l.data from luminosidade l " +
-                        "left join dispositivos d on l.id_dispositivo = d.id_dispositivo";
+                        "left join dispositivos d on l.id_dispositivo = d.id_dispositivo where d.excluido <> 1";
                     SqlCommand command = new SqlCommand(query, connection);
                     using (SqlDataReader reader = command.ExecuteReader())
                     {

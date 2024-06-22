@@ -10,7 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <!-- Inclua o CSS do Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <!-- Inclua o JavaScript do Leaflet -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 </head>
 
     <a asp-controller="Principal" asp-action="CadastroDispositivos">Cadastro Dispositivos</a>
@@ -51,11 +57,22 @@
 
                 <button class="btn btn-primary" type="submit">Editar</button>
             </form>
+
+            <form asp-controller="Principal" asp-action="excluirDispositivo" method="post">
+                <input type="hidden" id="id" name="id" value="@dispositivo.id" />
+
+                <button class="btn btn-primary" type="submit">Excluir</button>
+            </form>
             <p>========================================================================</p>
         </div>
     }
 
-</div>
+
+    <h2>Mapa Dispositivos</h2>
+
+    <div id="map" style="height: 400px;"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
     <script>
         // Script para criar o gráfico de Luminosidade
         var luminosidadeData = @Html.Raw(Model.JsonLuminosidade);
@@ -150,6 +167,30 @@
                 }
             }
         });
+
+        //Script mapa
+
+        var map = L.map('map').setView([-27.06755754208858, -48.88523373438182], 18); // Latitude, longitude inicial e zoom
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Exemplo de adicionar marcadores dinâmicos
+        var dispositivos = @Json.Serialize(Model.dispositivos);
+
+        for (var i = 0; i < dispositivos.length; i++) {
+            var dispositivo = dispositivos[i];
+
+            
+            console.log('LATITUDE: ' + dispositivo.latitude);
+            console.log('LONGITUDE: ' + dispositivo.longitude);
+
+            L.marker([dispositivo.latitude, dispositivo.longitude])
+                .addTo(map)
+                .bindPopup('<b>' + dispositivo.nome + '</b><br>' + 'ID: ' + dispositivo.id)
+
+        }
     </script>
 
 
