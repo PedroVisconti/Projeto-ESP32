@@ -1,199 +1,184 @@
 ﻿@model ESP32.Models.ModelsView.AcessadoViewModel
-
 @{
     ViewData["Title"] = "Principal";
 }
-
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Inclua o CSS do Leaflet -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-    <!-- Inclua o JavaScript do Leaflet -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 </head>
 <body>
-    <a asp-controller="Principal" asp-action="CadastroDispositivos">Cadastro Dispositivos</a>
-    <div class="container">
-    <h1>Gráficos de Luminosidade e Temperatura</h1>
-
-    <div style="max-width: 600px;">
-        <!-- Gráfico de Luminosidade -->
-        <canvas id="chartLuminosidade" width="600" height="300"></canvas>
+    <div class="nav-bar">
+        <a asp-controller="Principal" asp-action="CadastroDispositivos">Cadastrar Dispositivo</a>
+        <a asp-controller="Home" asp-action="Login">Sair</a>
     </div>
-
-
-    <div style="max-width: 600px; margin-top: 20px;">
-        <!-- Gráfico de Temperatura -->
-        <canvas id="chartTemperatura" width="600" height="300"></canvas>
-    </div>
-
-    <h2>Lista de dispositivos</h2>
-
-    @foreach (Dispositivo dispositivo in Model.dispositivos)
-    {
-
-        <div class="device-card">
-            <p class="card-text"><strong>ID:</strong> @dispositivo.id</p>
-            <p class="card-text"><strong>Nome:</strong> @dispositivo.nome</p>
-            <p class="card-text"><strong>Longitude:</strong> @dispositivo.longitude</p>
-            <p class="card-text"><strong>Latitude:</strong> @dispositivo.latitude</p>
-
-            <form asp-controller="Principal" asp-action="EditarDispositivo" method="post">
-                <input type="hidden" id="id" name="id" value="@dispositivo.id" />
-                <input type="hidden" id="nome" name="nome" value="@dispositivo.nome" />
-                <input type="hidden" id="longitude" name="longitude" value="@dispositivo.longitude" />
-                <input type="hidden" id="latitude" name="latitude" value="@dispositivo.latitude" />
-                <input type="hidden" id="latitude" name="clienteID" value="@dispositivo.clienteID" />
-                <input type="hidden" id="latitude" name="servidor" value="@dispositivo.servidor" />
-                <input type="hidden" id="latitude" name="porta" value="@dispositivo.porta" />
-                <input type="hidden" id="latitude" name="topico" value="@dispositivo.topico" />
-
-                <button class="btn btn-primary" type="submit">Editar</button>
-            </form>
-
-            <form asp-controller="Principal" asp-action="excluirDispositivo" method="post">
-                <input type="hidden" id="id" name="id" value="@dispositivo.id" />
-                <button class="btn btn-primary" type="submit">Excluir</button>
-            </form>
-            <p>========================================================================</p>
+    <div class="container-acessado">
+        <div class="graficos">
+            <h2 style="text-align: center;">Gráficos de Luminosidade e Temperatura</h2>
+            <div class="grafico-container">
+                <!-- Gráfico de Luminosidade -->
+                <canvas id="chartLuminosidade" width="600" height="300"></canvas>
+            </div>
+            <div class="grafico-container">
+                <!-- Gráfico de Temperatura -->
+                <canvas id="chartTemperatura" width="600" height="300"></canvas>
+            </div>
         </div>
-    }
-
-
-    <h2>Mapa Dispositivos</h2>
-
-    <div id="map" style="height: 400px;"></div>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-    <script>
-        // Script para criar o gráfico de Luminosidade
-        var luminosidadeData = @Html.Raw(Model.JsonLuminosidade);
-
-        var luminosidadeLabels = luminosidadeData.map(function (item) {
-            return item.data;
-        });
-
-        var luminosidadeValues = luminosidadeData.map(function (item) {
-            return item.luminosidade;
-        });
-
-        var ctxLuminosidade = document.getElementById('chartLuminosidade').getContext('2d');
-        var chartLuminosidade = new Chart(ctxLuminosidade, {
-            type: 'line',
-            data: {
-                labels: luminosidadeLabels,
-                datasets: [{
-                    label: 'Luminosidade',
-                    data: luminosidadeValues,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    fill: false,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    xAxes: [{
-                        type: 'time',
-                        time: {
-                            unit: 'day'
-                        },
-                        ticks: {
-                            maxTicksLimit: 10 // Limita o número de ticks no eixo x
-                        }
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            suggestedMax: 100 // Ajuste o valor conforme necessário para o gráfico de luminosidade
-                        }
-                    }]
-                }
+        <h2 style="text-align: center; margin-top:100px;">Lista de dispositivos</h2>
+        <div class="device-cards-container">
+            @foreach (Dispositivo dispositivo in Model.dispositivos)
+            {
+                <div class="device-card">
+                    <h3>@dispositivo.nome</h3>
+                    <p><strong>ID:</strong> @dispositivo.id</p>
+                    <p><strong>Localização:</strong> @dispositivo.latitude, @dispositivo.longitude</p>
+                    <div class="card-actions">
+                        <form asp-controller="Principal" asp-action="EditarDispositivo" method="post">
+                            <input type="hidden" id="id" name="id" value="@dispositivo.id" />
+                            <input type="hidden" id="nome" name="nome" value="@dispositivo.nome" />
+                            <input type="hidden" id="longitude" name="longitude" value="@dispositivo.longitude" />
+                            <input type="hidden" id="latitude" name="latitude" value="@dispositivo.latitude" />
+                            <input type="hidden" id="clienteID" name="clienteID" value="@dispositivo.clienteID" />
+                            <input type="hidden" id="servidor" name="servidor" value="@dispositivo.servidor" />
+                            <input type="hidden" id="porta" name="porta" value="@dispositivo.porta" />
+                            <input type="hidden" id="topico" name="topico" value="@dispositivo.topico" />
+                            <button class="btn-editar" type="submit">Editar</button>
+                        </form>
+                        <form asp-controller="Principal" asp-action="excluirDispositivo" method="post">
+                            <input type="hidden" id="id" name="id" value="@dispositivo.id" />
+                            <button class="btn-excluir" type="submit">Excluir</button>
+                        </form>
+                    </div>
+                </div>
             }
-        });
+        </div>
+        <div id="map" class="mapa-acessado" style="height: 400px; width:auto;"></div>
+        <br />
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script>
+            // Script para criar o gráfico de Luminosidade
+            var luminosidadeData = @Html.Raw(Model.JsonLuminosidade);
 
-        // Script para criar o gráfico de Temperatura
-        var temperaturaData = @Html.Raw(Model.JsonTemperatura);
+            var luminosidadeLabels = luminosidadeData.map(function (item) {
+                return item.data;
+            });
 
-        var temperaturaLabels = temperaturaData.map(function (item) {
-            return item.data;
-        });
+            var luminosidadeValues = luminosidadeData.map(function (item) {
+                return item.luminosidade;
+            });
 
-        var temperaturaValues = temperaturaData.map(function (item) {
-            return item.temperatura;
-        });
-
-        var ctxTemperatura = document.getElementById('chartTemperatura').getContext('2d');
-        var chartTemperatura = new Chart(ctxTemperatura, {
-            type: 'line',
-            data: {
-                labels: temperaturaLabels,
-                datasets: [{
-                    label: 'Temperatura',
-                    data: temperaturaValues,
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    fill: false,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    xAxes: [{
-                        type: 'time',
-                        time: {
-                            unit: 'day'
-                        },
-                        ticks: {
-                            maxTicksLimit: 10 // Limita o número de ticks no eixo x
-                        }
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            max: 40 // Ajuste o valor conforme necessário para o gráfico de temperatura
-                        }
+            var ctxLuminosidade = document.getElementById('chartLuminosidade').getContext('2d');
+            var chartLuminosidade = new Chart(ctxLuminosidade, {
+                type: 'line',
+                data: {
+                    labels: luminosidadeLabels,
+                    datasets: [{
+                        label: 'Luminosidade',
+                        data: luminosidadeValues,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: false,
                     }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                unit: 'day'
+                            },
+                            ticks: {
+                                maxTicksLimit: 10 // Limita o número de ticks no eixo x
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                suggestedMax: 100 // Ajuste o valor conforme necessário para o gráfico de luminosidade
+                            }
+                        }]
+                    }
                 }
+            });
+
+            // Script para criar o gráfico de Temperatura
+            var temperaturaData = @Html.Raw(Model.JsonTemperatura);
+
+            var temperaturaLabels = temperaturaData.map(function (item) {
+                return item.data;
+            });
+
+            var temperaturaValues = temperaturaData.map(function (item) {
+                return item.temperatura;
+            });
+
+            var ctxTemperatura = document.getElementById('chartTemperatura').getContext('2d');
+            var chartTemperatura = new Chart(ctxTemperatura, {
+                type: 'line',
+                data: {
+                    labels: temperaturaLabels,
+                    datasets: [{
+                        label: 'Temperatura',
+                        data: temperaturaValues,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                unit: 'day'
+                            },
+                            ticks: {
+                                maxTicksLimit: 10 // Limita o número de ticks no eixo x
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                max: 40 // Ajuste o valor conforme necessário para o gráfico de temperatura
+                            }
+                        }]
+                    }
+                }
+            });
+
+            //Script mapa
+
+            var map = L.map('map').setView([-27.06755754208858, -48.88523373438182], 18); // Latitude, longitude inicial e zoom
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map);
+
+            // Exemplo de adicionar marcadores dinâmicos
+            var dispositivos = @Json.Serialize(Model.dispositivos);
+
+            for (var i = 0; i < dispositivos.length; i++) {
+                var dispositivo = dispositivos[i];
+
+
+                console.log('LATITUDE: ' + dispositivo.latitude);
+                console.log('LONGITUDE: ' + dispositivo.longitude);
+
+                L.marker([dispositivo.latitude, dispositivo.longitude])
+                    .addTo(map)
+                    .bindPopup('<b>' + dispositivo.nome + '</b><br>' + 'ID: ' + dispositivo.id)
+
             }
-        });
-
-        //Script mapa
-
-        var map = L.map('map').setView([-27.06755754208858, -48.88523373438182], 18); // Latitude, longitude inicial e zoom
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-        }).addTo(map);
-
-        // Exemplo de adicionar marcadores dinâmicos
-        var dispositivos = @Json.Serialize(Model.dispositivos);
-
-        for (var i = 0; i < dispositivos.length; i++) {
-            var dispositivo = dispositivos[i];
-
-            
-            console.log('LATITUDE: ' + dispositivo.latitude);
-            console.log('LONGITUDE: ' + dispositivo.longitude);
-
-            L.marker([dispositivo.latitude, dispositivo.longitude])
-                .addTo(map)
-                .bindPopup('<b>' + dispositivo.nome + '</b><br>' + 'ID: ' + dispositivo.id)
-
-        }
-    </script>
-
-
+        </script>
 </body>
 </html>
